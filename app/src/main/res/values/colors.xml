@@ -7,4 +7,19 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="dark_blue">#2748A0</color>
+    <color name="light_blue">#53D0EC</color>
+    <color name="off_white">#F8F0EE</color>
+    <color name="red">#E5386D</color>
+
+    <color name="contrast_dark_blue">#53D0EC</color>
+    <color name="contrast_light_blue">#2748A0</color>
+    <color name="contrast_off_white">#E5386D</color>
+    <color name="contrast_red">#F8F0EE</color>
+
+    <color name="background_color">@color/light_blue</color>
+
+    <color name="default_text_color">@color/contrast_light_blue</color>
+
 </resources>
