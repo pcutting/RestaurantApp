@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_categories"
+        android:icon="@drawable/ic_menu"
+        android:title="Menu" />
+    <item
+        android:id="@+id/menu_cart"
+        android:icon="@drawable/ic_cart"
+        android:title="Cart" />
+    <item
+        android:id="@+id/menu_pending_pickup"
+        android:icon="@drawable/ic_cooking"
+        android:title="Cooking"
+        android:visible="false" />
+</menu>
