@@ -13,7 +13,6 @@ import com.philipcutting.restaurantapp.viewmodels.MainActivityViewModel
 
 class CategoriesAdapter(val onClick : (String) -> Unit) : ListAdapter<String, CategoriesAdapter.CategoryItemViewHolder>(diff) {
 
-
     companion object {
         private val diff = object : DiffUtil.ItemCallback<String>() {
             override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
@@ -44,12 +43,6 @@ class CategoriesAdapter(val onClick : (String) -> Unit) : ListAdapter<String, Ca
             binding.categoryTv.text = title
             binding.categoryContainer.setOnClickListener {
                 onClick(title)
-//                var menuFrag = MenuItemsFragment.newInstance(title)
-//                parentFragmentManager.beginTransaction()
-////                    .add(R.id.fragment_container,menuFrag)
-//                    .replace(R.id.fragment_container,menuFrag)
-//                    .commit()
-
             }
         }
     }

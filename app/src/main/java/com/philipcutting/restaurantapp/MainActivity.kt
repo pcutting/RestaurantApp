@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.philipcutting.restaurantapp.databinding.ActivityMainBinding
+import com.philipcutting.restaurantapp.models.MenuItem
 import com.philipcutting.restaurantapp.viewmodels.MainActivityViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -13,8 +14,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel : MainActivityViewModel
 
     private lateinit var binding: ActivityMainBinding
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -29,19 +28,36 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        viewModel.menuItemNavEvent.observe(this){item ->
+            if(item != null) {
+                onMenuItemClick(item)
+            }
+        }
+        viewModel.menuItemNavEvent.observe(this){item ->
+            if (item != null) {
+                onItemClick(item)
+            }
+        }
 
         binding.bottomNavigation.setOnNavigationItemSelectedListener {
             handleBottomNavigation(it.itemId)
         }
         binding.bottomNavigation.selectedItemId = R.id.menu_categories
-
-
-
     }
 
-    fun onCategoryClick(category: String) {
-        val menu = MenuItemsFragment.newInstance(category)
-        swapFragment(menu)
+    private fun onMenuItemClick(item: MenuItem) {
+        val itemFrag = MenuItemDetailFragment.newInstance(item)
+        swapFragment(itemFrag)
+    }
+
+    private fun onCategoryClick(category: String) {
+        val menuFragment = MenuItemsFragment.newInstance(category)
+        swapFragment(menuFragment)
+    }
+
+    private  fun onItemClick(item: MenuItem){
+        val menuItemFragment = MenuItemDetailFragment.newInstance(item)
+        swapFragment(menuItemFragment)
     }
 
 
@@ -68,6 +84,7 @@ class MainActivity : AppCompatActivity() {
             .replace(R.id.fragment_container, fragment)
             .commit()
     }
+
 
 
 }

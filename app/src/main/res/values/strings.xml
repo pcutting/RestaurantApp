@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">RestaurantApp</string>
     <string name="purchase">Purchase</string>
+    <string name="menu_item">Menu Item:</string>
 </resources>

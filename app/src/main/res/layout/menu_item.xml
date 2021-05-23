@@ -4,7 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/half_margin"
+    android:padding="@dimen/half_padding"
+    android:id="@+id/menu_item_container"
+    >
 
     <TextView
         android:id="@+id/Item_name"

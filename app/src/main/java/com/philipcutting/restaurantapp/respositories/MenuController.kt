@@ -1,7 +1,9 @@
 package com.philipcutting.restaurantapp.respositories
 
 import android.util.Log
+import com.philipcutting.restaurantapp.models.MenuItem
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -14,13 +16,15 @@ object MenuResponsitory {
     private const val localHostIP = "192.168.0.101"
     private const val baseUrl = "http://$localHostIP:8090"
 
-    private val client = OkHttpClient()
+    private val logger = HttpLoggingInterceptor()
+        .setLevel(HttpLoggingInterceptor.Level.BODY )
 
+    private val client = OkHttpClient.Builder().addInterceptor(logger)
     private val menuApi: MenuApi
         get() {
             return Retrofit.Builder()
                 .baseUrl(baseUrl)
-                .client(client)
+                .client(client.build())
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build()
                 .create(MenuApi::class.java)
@@ -53,8 +57,6 @@ object MenuResponsitory {
                 override fun onFailure(call: Call<Int>, t: Throwable) {
                     Log.v("Networking", "Error! $t")
                 }
-
-
             })
     }
 
@@ -66,12 +68,34 @@ object MenuResponsitory {
                 }
 
                 override fun onResponse(call: Call<MenuItems>, response: Response<MenuItems>) {
-                    val menuItems = response.body()?.items ?: emptyList()
-                    onSuccess( response.body()?.items ?: emptyList())
+                      //val menuItems = response.body()?.items ?: emptyList()
+                    if (response.body() != null) {
+                        onSuccess(convertRepositoryMenuToModelMenu(response.body()))
+                    }
                 }
-            }
-            )
+            })
     }
 
+    private fun convertRepositoryMenuToModelMenu(jMenuItems: MenuItems?): List<com.philipcutting.restaurantapp.models.MenuItem>{
 
+
+        val list = mutableListOf<com.philipcutting.restaurantapp.models.MenuItem>()
+
+        if(jMenuItems==null) {
+            return list
+        }
+
+        jMenuItems.items.forEach {
+            val item = com.philipcutting.restaurantapp.models.MenuItem(
+                    id=it.id,
+                    name = it.name,
+                    detailText = it.detailText,
+                    price = it.price,
+                    category = it.category,
+                    imageUrl = it.imageUrl
+            )
+            list.add(item)
+        }
+        return list.toList()
+    }
 }
