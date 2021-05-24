@@ -1,18 +1,25 @@
 package com.philipcutting.restaurantapp.respositories
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.os.Looper
 import android.util.Log
 import com.philipcutting.restaurantapp.models.MenuItem
 import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.internal.http2.Http2Reader
+import okhttp3.internal.http2.Http2Reader.Handler
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.io.IOException
 
 private const val TAG = "MenuController"
 
-object MenuResponsitory {
+object MenuRepository {
     private const val localHostIP = "192.168.0.101"
     private const val baseUrl = "http://$localHostIP:8090"
 
@@ -20,6 +27,7 @@ object MenuResponsitory {
         .setLevel(HttpLoggingInterceptor.Level.BODY )
 
     private val client = OkHttpClient.Builder().addInterceptor(logger)
+//    private val basicClient = OkHttpClient.Builder()
     private val menuApi: MenuApi
         get() {
             return Retrofit.Builder()
@@ -30,6 +38,46 @@ object MenuResponsitory {
                 .create(MenuApi::class.java)
         }
 
+
+    fun loadImage(url: String, onLoad: (Bitmap) -> Unit) {
+        //val url = "http://localhost:8090/images/3.png"
+        //val baseUrl = "192.168.0.101"
+        val replaceKey = "localhost"
+
+        val correctedUrl = url.replace(replaceKey, localHostIP)
+//        Log.i(TAG, "loadImage passed url -> $url")
+//        Log.i(TAG, "loadImage correctedUrl -> $correctedUrl")
+        val request = Request.Builder().url(correctedUrl).build()
+
+//        basicClient.build().newCall(request).enqueue(object : okhttp3.Callback {
+        client.build().newCall(request).enqueue(object : okhttp3.Callback {
+            override fun onFailure(call: okhttp3.Call, e: IOException) {
+                Log.e(TAG, "loadImage onFail: $e")
+            }
+
+            override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+                if (response.isSuccessful) {
+
+                    val bitmap = BitmapFactory.decodeStream(response.body?.byteStream())
+                    Log.i(TAG, "loadImage: Image.byteCount for $url -> ${bitmap?.byteCount}")
+                    android.os.Handler(Looper.getMainLooper()).post(object : Runnable {
+                        override fun run() {
+                            if(bitmap != null) {
+                                onLoad(bitmap)
+                            } else {
+                                Log.e(TAG, "There was an error on loading the image from the server.")
+                            }
+                        }
+                    })
+
+                } else {
+                    Log.e(TAG, "loadImage Had an error in loading.  ${response.message}")
+                }
+
+            }
+
+        })
+    }
 
     fun fetchCategories(onSuccess: (List<String>) -> Unit) {
         menuApi.fetchCategories()

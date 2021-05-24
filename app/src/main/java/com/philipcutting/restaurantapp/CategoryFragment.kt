@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.philipcutting.restaurantapp.databinding.FragmentCategoryBinding
 import com.philipcutting.restaurantapp.listAdapters.CategoriesAdapter
-import com.philipcutting.restaurantapp.respositories.MenuResponsitory
+import com.philipcutting.restaurantapp.respositories.MenuRepository
 import com.philipcutting.restaurantapp.viewmodels.MainActivityViewModel
 
 private const val TAG = "CategoryFragment"
@@ -33,7 +33,7 @@ class CategoryFragment: Fragment(R.layout.fragment_category) {
             false
         )
 
-        MenuResponsitory.fetchCategories { categories ->
+        MenuRepository.fetchCategories { categories ->
             adapter.submitList(categories)
             Log.i(TAG, "fetched #:${categories.count()}")
         }

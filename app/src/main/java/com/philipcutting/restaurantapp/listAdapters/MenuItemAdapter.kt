@@ -1,5 +1,6 @@
 package com.philipcutting.restaurantapp.listAdapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -7,7 +8,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.philipcutting.restaurantapp.databinding.MenuItemBinding
 import com.philipcutting.restaurantapp.models.MenuItem
+import com.philipcutting.restaurantapp.respositories.MenuRepository
+import com.philipcutting.restaurantapp.utilities.toCurrencyFormatFromDouble
 
+
+private const val TAG = "MenuItemsAdapter"
 
 class MenuItemsAdapter(val onClick: (MenuItem) -> Unit): ListAdapter<MenuItem, MenuItemsAdapter.MenuItemsViewHolder>(MenuItemsAdapter.diff) {
 
@@ -38,10 +43,15 @@ class MenuItemsAdapter(val onClick: (MenuItem) -> Unit): ListAdapter<MenuItem, M
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(item: MenuItem, onClick: (MenuItem) -> Unit) {
-            binding.ItemName.text = item.name
-
+            binding.itemName.text = item.name
+            binding.priceTv.text = item.price.toCurrencyFormatFromDouble()
             binding.menuItemContainer.setOnClickListener {
                 onClick(item)
+            }
+            MenuRepository.loadImage(item.imageUrl){ bitmap ->
+                Log.i(TAG, "Bitmap -> $bitmap.toString()")
+                binding.imageView.setImageBitmap(bitmap)
+                //binding.materialCardview.drawToBitmap(bitmap)
             }
         }
     }

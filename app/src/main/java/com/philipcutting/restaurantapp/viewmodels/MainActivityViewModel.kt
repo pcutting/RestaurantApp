@@ -8,7 +8,7 @@ import com.philipcutting.restaurantapp.models.MenuItem
 class MainActivityViewModel : ViewModel(){
     val categoryNavEvent: LiveData<String> = MutableLiveData("")
     val menuItemNavEvent: LiveData<MenuItem?> = MutableLiveData(null)
-    val menuItems: MutableList<MenuItem> = mutableListOf()
+    private val menuItems: MutableList<MenuItem> = mutableListOf()
 
 //    val currentItem: MenuItem? = null
 
@@ -20,7 +20,6 @@ class MainActivityViewModel : ViewModel(){
         (menuItemNavEvent as MutableLiveData).value = item
     }
 
-    fun getMenuItem(id:Int) = menuItems.first { it.id == id }
-
-    fun menuItem() = menuItemNavEvent.value
+//    fun getMenuItem(id:Int) = menuItems.first { it.id == id }
+//    fun menuItem() = menuItemNavEvent.value
 }

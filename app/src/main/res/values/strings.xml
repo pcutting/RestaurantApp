@@ -2,4 +2,7 @@
     <string name="app_name">RestaurantApp</string>
     <string name="purchase">Purchase</string>
     <string name="menu_item">Menu Item:</string>
+    <string name="add_to_cart">Add to Cart</string>
+    <string name="image_of_food">Image of food</string>
+    <string name="menu_item_image">menu Item image</string>
 </resources>
