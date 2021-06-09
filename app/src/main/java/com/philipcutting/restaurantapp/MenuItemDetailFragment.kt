@@ -6,12 +6,12 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.observe
 import com.philipcutting.restaurantapp.databinding.FragmentMenuItemBinding
 import com.philipcutting.restaurantapp.models.MenuItem
 import com.philipcutting.restaurantapp.respositories.MenuRepository
 import com.philipcutting.restaurantapp.utilities.toCurrencyFormatFromDouble
 import com.philipcutting.restaurantapp.viewmodels.MainActivityViewModel
-
 
 private const val TAG = "MenuItemDetailFragment"
 class MenuItemDetailFragment: Fragment(R.layout.fragment_menu_item) {
@@ -52,20 +52,17 @@ class MenuItemDetailFragment: Fragment(R.layout.fragment_menu_item) {
         Log.i(TAG, "Passed item info: $itemId, Name: $itemName, Description: $itemDescription, " +
                 "ImageUrl: $itemImageUrl, Price $$itemPrice")
 
-
         viewModel.menuItemNavEvent.observe(viewLifecycleOwner){ item ->
             if(item != null) {
                 binding.apply{
                     nameTv.text = item.name
                     detailTextTv.text = item.detailText
-//                    this.imageView....
                     priceTv.text = item.price.toCurrencyFormatFromDouble()
                 }
             } else {
                 binding.apply {
                     nameTv.text = itemName
                     detailTextTv.text = itemDescription
-                    //imageView .....
                     priceTv.text = itemPrice
                 }
             }
@@ -76,11 +73,7 @@ class MenuItemDetailFragment: Fragment(R.layout.fragment_menu_item) {
             binding.imageView.setImageBitmap(bitmap)
         }
 
-
         val bar = (activity as AppCompatActivity).supportActionBar
         bar?.title = "Item: $itemName."
     }
-
-
-
 }

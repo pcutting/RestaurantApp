@@ -26,7 +26,7 @@ class MenuItemsFragment: Fragment(R.layout.fragment_menu_items) {
                 putString(CATEGORY, category)
             }
             return MenuItemsFragment().apply {
-                setArguments(bundle)
+                arguments = bundle
             }
         }
     }
@@ -46,8 +46,6 @@ class MenuItemsFragment: Fragment(R.layout.fragment_menu_items) {
                 RecyclerView.VERTICAL,
                 false
         )
-
-
 
         MenuRepository.fetchMenuItems(category){
             adapter.submitList(it)
