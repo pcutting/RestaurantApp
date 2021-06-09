@@ -27,7 +27,7 @@ object MenuRepository {
         .setLevel(HttpLoggingInterceptor.Level.BODY )
 
     private val client = OkHttpClient.Builder().addInterceptor(logger)
-//    private val basicClient = OkHttpClient.Builder()
+
     private val menuApi: MenuApi
         get() {
             return Retrofit.Builder()
