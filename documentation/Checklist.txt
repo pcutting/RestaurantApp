@@ -7,6 +7,6 @@ Finished Requirements:
 [] Part 5
 [] Part 6
 [] Part 7
-[] Part 8
+[Current] Part 8
 [] Part 9
 [] Part 10
