@@ -1,0 +1,58 @@
+Part Five: Categories
+---------------------
+
+The first request in your workflow is to display the menu categories. How will
+each view in your menu look? How will you identify the views so you can use
+them in code?
+
+Basic Setup
+-----------
+
+Create a new layout file for your category ViewHolder. All you need to do is
+display a single string. So, add a TextView to the layout. You will also need
+to make other changes to layout to ensure it looks correct when displayed to
+the user.
+
+Next, create a ListAdapter to display the categories.
+
+Once the adapter has been created, in your category fragment make sure you properly
+attach the adapter to the RecyclerView in the fragments view. (if you have not
+set up the fragment, now is a good time to do this)
+
+When your fragment first loads, you will need to request the categories from
+the server. Once you have the list, submit it to the ListAdapter. (Note: don't
+forget we used a callback to get the data from the server)
+
+Build and run your app with the server running. You should see a list of the
+categories that you defined back in menu.json.
+
+Pass Category Data
+------------------
+
+When the user taps a view with a category name, it will send the user to the
+Menu screen, which currently displays an empty RecyclerView. To make a network
+request on that next screen, you'll use factory method to pass the appropriate
+data.
+
+Open the Menu Fragment. Create a companion object that takes in the category
+and constructs the fragment:
+
+class MenuFragment : Fragment(R.layout.fragment_menu) {
+
+  companion object {
+    private const val CATEGORY = "CATEGORY"
+
+    fun newInstance(category: String): MenuFragment {
+      val bundle = Bundle().apply {
+        putString(CATEGORY, category)
+      }
+      return MenuFragment().apply {
+        setArguments(bundle)
+      }
+    }
+  }
+}
+
+Now, add an onClickListener to the ListAdapter you've created. When a user taps
+on one of the categories, create a new instance of the MenuFragment and swap
+out the fragments in your activity. (this will be a stretch for you)

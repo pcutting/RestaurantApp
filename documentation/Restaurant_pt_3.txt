@@ -1,0 +1,134 @@
+Part Three: Set Up the Storyboard Workflow
+
+Now that you've thought through the project, its views, and its models, it's
+time to make your app happen.
+
+Project Setup
+-------------
+
+As you learned in a previous lesson, Android applications need explicit
+permission to access APIs that use HTTP instead of HTTPS. But because it takes
+quite a few steps to set up the server to use HTTPS, you'll allow your menu app
+to run over HTTP.
+
+Create a new Android Studio Project.
+
+In your app's manifest.xml file, add `android:usesCleartextTraffic="true"` to
+the application tag.
+
+Go to https://github.com/square/moshi/ and include the dependency in your build.gradle
+file.
+
+Go to https://square.github.io/retrofit/ and include the dependency in your
+build.gradle file.
+
+Go to https://square.github.io/okhttp/ and include the dependency in your
+build.gradle file.
+
+
+Set Up a Bottom Navigation
+--------------------------
+
+In the project planning phase, you already established that you'll use a bottom
+navigation view. Start by opening your apps build.gradle file and include the
+Material Design Components library (https://github.com/material-components/material-components-android).
+
+Next go to activity_main.xml and delete the views in the layout.
+
+Think ahead for a second. What will your tabs do? In this design, the first
+fragment will display a list of the menu categories, and the second fragment
+will display a list of the items the user has already added to the order.
+Therefore, each tab should use a subclass of Fragment.
+
+Add the Bottom Navigation view to your main activity layout file.
+
+Next, create a layout for the menu fragment and a layout for the users order
+fragment.
+
+You've worked with a bottom navigation bar before, so you know you will need to
+create a menu for the bottom bar. Create a menu folder in the res directory. Now,
+create a bottom_nav.xml file in the menu folder. In it, add two items called
+"Menu" and "Your Order". You should also add some icons, which you can find
+anywhere online. Add the menu to the bottom navigation view.
+
+Create RecyclerView and Detail Fragments
+----------------------------------------
+
+Take a moment to think about how the user will interact with the menu. When
+first launched, the app will display the list of categories in the first tab,
+and tapping a category will display its list of items. The second tab will
+display a list of ordered items.
+
+In each of the fragment layouts you created previously, add a RecyclerView.
+
+Define the Models
+-----------------
+
+Now you're ready to begin constructing the data for each item in the menu.
+Create a new Kotlin file called "MenuItem.kt" and define a MenuItem data class.
+Each item should have properties that correspond to the keys listed in each
+map from the API. You can reference the earlier section on JSON structure to
+review how the properties work.
+
+Similar to previous lessons, you'll make your data class use Moshi to decoded
+the JSON. There are two JSON keys of concern. One, "image_url", uses an underscore
+instead of camel case. The other, "description", is a common property name in the
+API. So you'll need to use the @Json annotation.
+
+The highest level of information returned by the API is a key called "items" that
+contains an array of all of the menu items in JSON format. Because of this,
+you'll need an intermediary MenuItems data class and has a property called "items"
+so that the JSON data can be decoded properly. You can then access the array of
+items through this object. You can place this intermediary object in the same
+file as MenuItem.
+
+
+// don't forget to annotate the class
+data class MenuItem(
+  val id: Int,
+  val name: String,
+  val detailText: String,
+  val price: Double,
+  val category: String,
+  val imageUrl: String
+)
+
+// don't forget to annotate the class
+data class MenuItems(
+  val items: List<MenuItem>
+)
+
+The API can also be used to return a list of "categories". This list is an array
+of strings under the the key categories. Similar to decoding the data that
+contains menu items, you'll need an intermediate object. In this case it will be
+Categories and should have a property called categories of type List<String>. Put
+this in a new file called "IntermediaryModels.kt".
+
+// don't forget to annotate the class
+data class Categories(
+  val categories: List<String>
+)
+
+Just as with categories, you'll need an intermediary model for the value that
+comes with "preparation_time". This is returned from the /order endpoint and
+represents the amount of time until an order will be ready. Since the key in
+JSON uses an underscore, you should create a custom key so your property can be
+named according to proper Kotlin convention. This data class can be included in
+"IntermediaryModels.kt" along with the Categories object.
+
+// don't forget to annotate the class
+data class PreparationTime(
+  val prepTime: Int
+)
+
+The order model object will contain a simple list of the items the user has added.
+Put this in a new file called "Order.kt.”
+
+// don't forget to annotate the class
+data class Order(
+  val menuItems: MutableList<MenuItem>
+)
+
+With the MenuItem, MenuItems, Categories, PreparationTime, and Order data class
+defined, you can begin to write the networking code, as well as the code to
+handle the data that's returned from the API.

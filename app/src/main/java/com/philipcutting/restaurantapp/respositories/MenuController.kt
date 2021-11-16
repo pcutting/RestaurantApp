@@ -27,7 +27,7 @@ object MenuRepository {
         .setLevel(HttpLoggingInterceptor.Level.BODY )
 
     private val client = OkHttpClient.Builder().addInterceptor(logger)
-//    private val basicClient = OkHttpClient.Builder()
+
     private val menuApi: MenuApi
         get() {
             return Retrofit.Builder()
@@ -38,18 +38,14 @@ object MenuRepository {
                 .create(MenuApi::class.java)
         }
 
-
     fun loadImage(url: String, onLoad: (Bitmap) -> Unit) {
         //val url = "http://localhost:8090/images/3.png"
         //val baseUrl = "192.168.0.101"
         val replaceKey = "localhost"
 
         val correctedUrl = url.replace(replaceKey, localHostIP)
-//        Log.i(TAG, "loadImage passed url -> $url")
-//        Log.i(TAG, "loadImage correctedUrl -> $correctedUrl")
         val request = Request.Builder().url(correctedUrl).build()
 
-//        basicClient.build().newCall(request).enqueue(object : okhttp3.Callback {
         client.build().newCall(request).enqueue(object : okhttp3.Callback {
             override fun onFailure(call: okhttp3.Call, e: IOException) {
                 Log.e(TAG, "loadImage onFail: $e")

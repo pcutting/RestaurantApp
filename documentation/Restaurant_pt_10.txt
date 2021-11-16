@@ -1,0 +1,29 @@
+Wrap Up
+-------
+
+Congratulations! This guided project required a lot of knowledge and setup to
+work with the server. You also created more fragments than in any app you've
+built in this course. By now, you should feel very comfortable with passing data
+between activities and fragments and working with data that's not stored locally
+on the device.
+
+As you build larger and more complex apps, you have more things to consider, such
+as how data is stored and where to keep network request logic. If you need more
+explanation about asynchronous requests, queues, and updating the user interface
+with server data, you can always reread the applicable lessons in this unit.
+
+Stretch Goals
+-------------
+
+ * In each network request, add error handling that will inform the user if the
+   app is unable to retrieve data from the server. You'll probably want to modify
+   the completion block of your fetch methods to include an Error object so that
+   your fragments can take appropriate action.
+
+ * Create a local notification that's displayed 10 minutes before the order will
+   be ready. For example, if the order will take 30 minutes, fire the alert on
+   the user's device in 20 minutes.
+
+ * Save the order. What happens when the user closes out the app and returns?
+   most likely they will have to refill their order. How could you save the
+   order info and restore it when the app is relaunched?
