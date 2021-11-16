@@ -1,0 +1,6 @@
+To run server for api, make sure to have python 2 (2.7) installed.
+
+1) cd into folder.
+
+2) run command: py -2 restaurantserver.py
+

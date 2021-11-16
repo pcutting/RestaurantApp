@@ -1,0 +1,54 @@
+Part Seven: Menu Details
+------------------------
+
+Your user has tapped an item on the Menu screen. Next, they'll want some
+information to help them make a decision—on a details screen. Even though they've
+already viewed the item's name, price, and image (which you'll create soon), it's
+a nice idea to repeat the same information on the next screen they'll see.
+
+So what else is there? The only new information is the detailText, which might
+or might not be represented by a large chunk of text. You can design any user
+interface you'd like for this view, but—for the purposes of this project—you'll
+focus on making sure there's a way to add the item to the user's order.
+
+Screen Requirements
+-------------------
+
+ * must show an image of the item
+ * the name of the item
+ * the price of the item
+ * a description of the item
+ * a button to add the item to the cart
+
+Downloading an Image
+--------------------
+
+This screen will require you to download an image and display it. To do this,
+you will use OkHttp. You should already have an OkHttpClient defined in your
+network object. So, you will want to create a new method that takes in a callback
+to set the ImageView.
+
+Here is an example:
+
+fun loadImage(url: String, onLoad: (Bitmap) -> Unit) {
+  val request = Request.Builder().url(url).build()
+  okHttpClient.newCall(request).enqueue(object : Callback() {
+    override fun onFailure(call: Call, e: IOException) {
+        //Handle the error
+    }
+
+    override fun onResponse(call: Call, response: Response) {
+      if (response.isSuccessful) {
+        val bitmap = BitmapFactory.decodeStream(response.body.byteStream())
+        // Remember to set the bitmap in the main thread.
+        Handler(Looper.getMainLooper()).post(object : Runnable() {
+          override fun run() {
+              onLoad(bitmap)
+          }
+        })
+      } else {
+        //Handle the error
+      }
+    }
+  })
+}

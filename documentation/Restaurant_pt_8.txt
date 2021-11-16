@@ -1,0 +1,78 @@
+Part Eight: View and Edit Order
+-------------------------------
+
+Where are you now? You've laid out the interface for displaying the menu in its
+entirety, from the list of categories all the way down to the details of a single
+item. But the "Add To Order" button still doesn't do anything—because there's no
+order being tracked. The app needs to be able to keep track of the user's order
+and submit it back to the restaurant.
+
+Display Order
+-------------
+
+Open the Order Fragment (or create a new if not done already) and create a
+property that will hold the order. Just create an empty Order that will be filled
+in item-by-item. Unlike most of your screens, this one can be presented even if
+its RecyclerView contents are empty.
+
+Since you are showing menu items in the order screen, you will be able to use
+the same views as you did on the menu screen. So, you can use the same ListAdapter
+you created for the menu screen as here.
+
+Create Ordering Functionality
+-----------------------------
+
+Even though you have an "Add To Order" button on the Menu Item screen, you don't
+have a way to pass the MenuItem data over to the Order screen. How can you hand
+information from one fragment to another?
+
+You can create a ViewModel that is scoped to the Activity that hosts the fragments.
+When the user taps the add to order button, the item is added to the Order list
+in the ViewModel. Try this out!
+
+When the Order Fragment is loaded, it will need to pull the order from the ViewModel
+and display the order to the user. When should this occur during the Fragment
+Lifecycle? You should research this: https://developer.android.com/guide/components/fragments
+
+Finally, when a user taps on the add-to-order button, the menu item should be
+added to list in the ViewModel.
+
+Update the Order Badge
+----------------------
+
+A nice touch is to update the badge value of the Order tab to match the number of
+items in the order. Then the user can see that they've successfully added an item
+without needing to switch tabs.
+
+Which object should be responsible for updating the badge? You might think to add
+the code to Order Fragment. After all, it's already handling the orders. But doing
+so would require it to know a good bit about the activity: it's contained inside
+a bottom navigation controller inside the activity. The activity will need to
+know when how many orders there are.
+
+So, you will need to create a listener for the Activity to implement. Once this
+has been done, it can be registered with the ViewModel. Whenever the order items
+have been updated, call the listener with the current total of the order items.
+
+To add a badge to the bottom navigation: https://material.io/develop/android/components/bottom-navigation/
+
+Delete Items from Order
+-----------------------
+
+What if the user changes their mind? On Android, it is common to swipe to delete
+an item.
+
+Create a new ItemTouchHelper.SimpleCallback:
+(https://developer.android.com/reference/androidx/recyclerview/widget/ItemTouchHelper.SimpleCallback)
+
+val itemTouchHelper = ItemTouchHelper(
+  ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN) {
+    fun onSwiped(viewHolder: ViewHolder, direction: Int) {
+      // remove from adapter and ViewModel
+    }
+  }
+)
+
+Attache the touch helper to your ListAdapter:
+
+itemTouchHelper.attachToRecyclerView(myListAdapter)

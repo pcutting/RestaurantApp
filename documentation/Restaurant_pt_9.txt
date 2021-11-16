@@ -1,0 +1,63 @@
+Part Nine: Submit Order
+-----------------------
+
+Now you're ready to send data back to the restaurant server. It makes sense for
+the user to submit the order directly from the Order Fragment. Add a button to
+the upper-right corner of the order screen, and set its title to "Submit." What
+should happen when the user taps the button? In this example, there's a monetary
+transaction involved, so it's standard practice to ask the user to confirm their
+choice. If this were a real app, you'd begin processing payment when the user
+confirms the order, and you'd inform the user that the order has been placed
+only after you'd received notification of a successful payment.
+
+Build Order Confirmation
+------------------------
+
+You've reached the final screen within the workflow. The user needs confirmation
+that the order has been received from the server. When the server responds with
+a preparation time, you can display the confirmation screen.
+
+Create a new activity and call it something like ConfirmationActivity.
+
+You can design the order confirmation screen however you like. The most important
+piece of information is the time until the user can pick up their order. To keep
+things simple, you might include two objects: a label that displays the number of
+minutes before the food is ready, and a button that sends the user back to the tabs.
+
+Using the standard method, create a factory method to build the intent for the
+ConfirmationActivity. The method should take in the delivery time from the
+server.
+
+When the ConfirmationActivity is launched, use the time you passed in to the
+intent and display it to the user.
+
+Submit Order
+------------
+
+With the confirmation screen built, you can now submit the users order to they
+server. In your Order Fragment, you should have a submit order button (if you
+don't, now's the time to add it). When the user taps on the submit order button
+you will want to ask the user to confirm whether or not they want to complete
+the order.
+
+How do you do this? Attach an onClick listener to the submit order button, which
+launches an alert dialog with 2 buttons. When the user taps "cancel", the dialog
+is dismissed. When the user taps "submit", the order is submitted to the server.
+
+This will be like all the other network requests you've made. All the menu ids
+will be sent to the server. The callback will receive the order preparation time.
+Once you've received the order preparation time, launch the order confirmation
+screen, passing the time to the screen.
+
+When the confirmation screen is launched, display the preparation time to the
+user.
+
+Clear Out Old Order Data
+------------------------
+
+There's one piece of cleanup that you still need to address. After the user has
+submitted the order, the order data is no longer needed. The best time to remove
+the order list is when the confirmation screen is dismissed.
+
+When the user presses the back button, you can clear the order list from the
+ViewModel.

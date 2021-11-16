@@ -1,0 +1,84 @@
+Part Two: Project Planning
+
+Think of how you view a traditional menu when you enter a restaurant. Items are
+sorted into particular categories and have a title, a description, a price, and
+maybe an accompanying image. You can add your own customization to the appearance
+and presentation of the menu, but the workflow should remain fairly standard.
+
+Features
+
+As with any list, it's pretty easy to establish the basic features for your menu app:
+
+ * Display the list of available items
+ * Add items to an order
+ * Display the current order
+ * Submit the order
+
+In this project, the menu list comes from an API—a good idea for a restaurant.
+By storing the list on a server, the restaurant can update the menu without
+requiring customers to update the app they're using. As long as the features of
+the app don't change, the content that the app displays can be adjusted to
+reflect the restaurant's latest offerings.
+
+Workflow
+
+Since a menu is a list, you've probably guessed that you'll be working with
+RecyclerViews. Each ViewHolder can display a list of data that's returned from
+an API. Using the /categories and /menu endpoints, the API can return a list of
+menu categories and the items associated with each category.
+
+It might make the most sense if the first screen displays the categories, and
+tapping a ViewHolder displays another RecyclerView listing the items in the
+category. Tapping a menu item could then display details on the next screen and
+a button that adds the item to the order.
+
+So far, so good. But what if the customer wants to view the items they've added
+to their order? Whenever you need to provide easy access to a view—at any point
+in the user's workflow—a bottom navigation view is a good way to contain the view.
+Tabs allow the user to switch quickly between contexts, without disrupting their
+experience.
+
+Repository
+
+As you learned earlier, you can place networking code in a number of different
+places. For this project, the best place is inside a Repository. Why structure
+the code this way, versus adding the networking logic to an Activity/Fragment? A
+Repository object adds a layer of separation between the Activity/Fragment and the
+networking code. Instead of packing the necessary networking code into one or
+several Activities/Fragments, you can have your Activities/Fragments access a
+Repository object that contains the network request code. And because all your
+networking code is in a single location, it will be easier to make future updates
+to network requests.
+
+Views
+
+You already know that your app will rely heavily on RecyclerViews.
+
+Your app will also have two screens that don't use RecyclerViews. You can
+customize these views to your liking.
+
+Models
+
+Your app is primarily concerned with one model: the item on the menu. When you
+issue a query to the /menu endpoint, the JSON data will include a collection of
+maps, each of which can be serialized into some sort of data class.
+
+What about using a data class for the data returned from the /categories endpoint?
+A category is a string, and when you query the endpoint, the API will return an
+array of strings. Typically, this form of data would be considered so simple that
+there's no need to create a more complex data structure. However, this app plans
+to use Moshi, and the highest level of information returned by the API for
+/categories is a key called categories. This can't be decoded directly into a
+data class, so you'll need an intermediary object that contains a property called
+categories.
+
+Similarly, you'll need a PreparationTime intermediary object for the /order
+endpoint since it returns an integer representing the time until an order will
+be completed under the key preparation_time.
+
+The server has no GET endpoint for orders; they’re constructed and stored
+exclusively in the client app. But even though you won’t be decoding orders from
+JSON, you should still formalize their existence using Order model object. The
+Repository you'll create later to manage the order will display data from this
+object. The order data class itself will be very simple: a single property that
+stores the array of MenuItems it comprises.

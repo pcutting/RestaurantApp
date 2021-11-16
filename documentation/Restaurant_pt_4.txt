@@ -1,0 +1,133 @@
+Part Four: Add Networking Code
+------------------------------
+
+So far, you've set up your data to be retrieved from the server, created a model
+to represent the server data, and defined the basic workflow for the app. But
+before you can begin displaying categories, you need to request the list from the
+API.
+
+You already decided to pack all the networking code—creating the proper URLs,
+performing the request, and processing the JSON results—into a single controller
+object. This abstraction will reduce the amount of code in the Activities and
+Fragments and will also simplify any future code updates.
+
+Define the Methods
+------------------
+
+Create a new Kotlin file called "MenuController.kt" and define a MenuRepository
+class within it. Since all the network calls in this class use the same interface
+and host (http://localhost:8090/), you can define a constant that holds this value.
+
+object MenuRepository {
+
+  private const val baseUrl = "http://localhost:8090/"
+}
+
+Create a new file called "MenuApi.kt". In that file create a new interface called
+MenuApi
+
+interface MenuApi {
+
+}
+
+Consider the API requests that your app is going to make. You'll have a GET for
+the categories, a GET for items within a category, and a POST containing the
+user's order when it's time to communicate back to the restaurant's server. That
+means you'll need to define three methods, one for each request.
+
+1. Review the list of server endpoints at the beginning of this project. For the
+   request to /categories, you know that there are no query parameters or
+   additional data to send and that the response JSON will contain an array of
+   strings.
+
+   @GET("/categories")
+   fun fetchCategories(): Categories
+
+2. The request to /menu includes a query parameter: the category string. The
+   JSON that's returned contains an list of maps, and you'll want to deserialize
+   each map into a MenuItem object. So the method that will perform the request
+   to ​ /menu should have one parameter: the category string:
+
+   @GET("/menu")
+   fun fetchMenuItems(@Query("category") categoryName: String): MenuItems
+
+3. The POST to /order will need to include the collection of menu item IDs, and
+   the response will include an integer specifying the number of minutes the
+   order will take to prep. The method that will perform this network call should
+   have a parameter: a list of integers to hold the IDs and return the order prep
+   time.
+
+   @POST("/order")
+   fun submitOrder(@Body menuIds: List<Int>): Int
+
+Make Requests with URL Session
+------------------------------
+
+In your MenuRepository class, you need to build the Retrofit client out:
+
+object MenuRepository {
+
+  private val client = OkHttpClient()
+
+  private val menuApi: MenuApi
+      get() {
+          return Retrofit.Builder()
+              .baseUrl(baseUrl)
+              .client(client)
+              .addConverterFactory(MoshiConverterFactory.create())
+              .build()
+              .create(MenuApi::class.java)
+      }
+}
+
+Let's define the methods for getting the categories and submitting the order:
+
+fun fetchCategories(onSuccess: (List<String>) -> Unit) {
+  menuApi.fetchCategories()
+    .enqueue(object : Callback<Categories> {
+        override fun onFailure(call: Call<Categories>, t: Throwable) {
+          Log.v("Networking", "Error! $t")
+        }
+
+        override fun onResponse(call: Call<Categories>, response: Response<Categories>) {
+          val categories = response.body()?.categories ?: emptyList()
+          onSuccess(categories.categories)
+        }
+      }
+    )
+}
+
+fun submitOrder(menuIds: List<Int>, onSuccess: (Int) -> Unit) {
+  menuApi.submitOrder(menuIds)
+    .enqueue(object : Callback<Int> {
+      override fun onFailure(call: Call<Categories>, t: Throwable) {
+        Log.v("Networking", "Error! $t")
+      }
+
+      override fun onResponse(call: Call<Int>, response: Response<Int>) {
+        val prepTiem = response.body()? ?: -1
+        onSuccess(prepTime)
+      }
+    }
+  )
+}
+
+When you get the menu items, you will be passing in the category:
+
+fun fetchMenuItems(category: String, onSuccess: (List<MenuIte>) -> Unit) {
+  menuApi.fetchMenuItems(category)
+    .enqueue(object : Callback<MenuItems> {
+      override fun onFailure(call: Call<MenuItems>, t: Throwable) {
+        Log.v("Networking", "Error! $t")
+      }
+
+      override fun onResponse(call: Call<MenuItems>, response: Response<Int>) {
+        val menuItems = response.body()?.items ?: emptyList()
+        onSuccess(menuItems)
+      }
+    }
+  )
+}
+
+You've spent some time defining all the network requests that will take place at
+some point in the app. Now it's time to put them to work.

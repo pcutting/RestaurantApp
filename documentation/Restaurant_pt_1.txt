@@ -1,0 +1,89 @@
+Part One: Server Details and Project Setup
+
+Before you begin thinking about the workflow of your menu app, it's important to
+understand how to work with the server. By learning how the API and the server
+work, you can begin to come up with a list of features for the project. You're
+not required to make any modifications to the data that accompanies the server,
+but you'll still need to run the server on your Mac.
+
+Take some time now to set up the server and to wrap your head around the details.
+
+Run the Server
+
+You should download the appropriate zip file from the previous lesson, there is
+one for Windows and one for Mac. Unzip the file and right-click OpenRestaurant,
+and click Open from the drop down. Depending on your Mac's security configuration,
+you may see a prompt letting you know that the app's developer identity cannot be
+confirmed. Click Open.
+
+To start and stop the server, click the button at the bottom right. If you make
+changes to server resource files, you need to stop and restart the server.
+
+You'll notice that the server app lets you view menu categories and items, edit
+items, and open the images folder. Clicking Edit Items will open up menu.json.
+This file contains the data that the server returns. If you want to change the
+menu, you'll need to edit this file.
+
+Clicking Open Images Folder will take you to a directory that contains images
+for items on the menu. If you want to put your own food images in this directory,
+make sure to use PNG images. Note that the image for a menu item is always named
+for its ID.
+
+To verify that the server is functioning properly, open your browser and load
+the URL, http://localhost:8090. The browser should display onscreen text that
+indicates the status of the server. If you receive an error, the most common
+cause is that you've incorrectly edited menu.json and the menu list wasn't
+created properly. You'll need to verify that the JSON data is valid, close the
+application window, and restart the server. You can use the Reset Data button to
+discard your custom data and restore the original files.
+
+Depending on the configuration of your Mac, you may see a prompt asking for
+permission to allow incoming connections to the server. Click Allow.
+
+JSON Structure
+
+Open menu.json to view the data that will be returned from the API. At the root
+level of the JSON is an array of dictionaries, where each dictionary represents
+an item on the menu. In each dictionary, you'll see the following keys:
+
+ * id is a unique Int that distinguishes one item from another. If you add or
+   modify a dictionary, make sure each id value is unique.
+ * name is a String that refers to each item on the menu. The server doesn't
+   require names to be unique, but it wouldn't make sense to repeat the same
+   item on the menu, so keep the names unique.
+ * description is a String that provides further detail about the choice.
+ * price is a Double that expresses the price of a menu item. In the sample data,
+   the values are the equivalent of USD ($). However, the price values aren't
+   tied to a particular currency, so you can adjust them to fit any currency you like.
+ * category is a String that provides a way to divide items, just like in a real
+   menu. In the sample data, the categories are "appetizers," "entrees," "specials,"
+   "drinks," and "desserts." If you want to create a new entree, for example,
+   assign the category key to "entrees." If you want to create a new category,
+   such as "sides," assign at least one menu item's category key to "sides."
+ * imageName should match the name of the image stored in the Images directory,
+   including the file extension. Don't worry about specifying any sort of folder
+   structure; just provide the name. If you don't provide an image, use double
+   quotes ("") as the value.
+
+The server is configured to use these keys (and only these keys) when you query
+the API. If you add keys into a dictionary, the server will ignore them.
+
+Server Endpoints
+
+The API in this project has several URLs for implementing your app's features.
+Every URL begins with http://localhost:8090 and can be combined with the following
+endpoints:
+
+ * /categories: A GET request to this endpoint will return an array of strings
+   of the categories in menu.json. The array will be available under the key,
+   "categories," in the JSON.
+ * /menu: A GET request to this endpoint will return the full array of menu items,
+   but it can also be combined with the query parameter, category, to return a
+   subset of items. The array will be available under the key, "items," with the JSON.
+ * /images: Combined with the name of the image, a GET request to this endpoint
+   will return the image data associated with each menu item.
+ * /order: A POST to this endpoint with the collection of menu item id values
+   will submit the order and will return a response with the estimated time
+   before the order will be ready. The IDs you send need to be be contained with
+   JSON data under the key, menuIds. When you parse the JSON, an estimate of the
+   time before the order is ready will be under the key, "preparation_time.”

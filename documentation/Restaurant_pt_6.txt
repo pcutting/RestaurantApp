@@ -1,0 +1,44 @@
+Part Six: Menu Items
+--------------------
+
+So far, you've made the request for the list of categories from the server, and
+the user can select a category from the list. With that data available in
+MenuFragment, you can query for menu items listed in the category.
+
+The menu item screen shares many attributes with the categories screen in the
+previous section. They both use a RecyclerView, they both use a network request
+to fetch the appropriate data, and selected views in both screens send the user
+to a new screen. Because of those similarities, the code patterns in the
+following section should feel pretty familiar to you.
+
+Basic Setup
+-----------
+
+Create a new layout file for your menu ViewHolder. All you need to do is
+display a single string and a price. So, add two TextViews to the layout. The
+name of the menu item should be on the left hand side of the layout and the price
+should be on the right hand side of the layout. You will also need to make other
+changes to layout to ensure it looks correct when displayed to the user.
+
+Next, create a ListAdapter to display the menu items.
+
+Once the adapter has been created, in your menu fragment make sure you properly
+attach the adapter to the RecyclerView in the fragments view.
+
+When your fragment first loads, you will need to request the menu items from
+the server. When you make this request, you will pass in the category you received
+from the previous fragment. Once you have the list, submit it to the ListAdapter.
+(Note: don't forget we used a callback to get the data from the server)
+
+Build and run your app with the server running. You should see a list of the
+categories that you defined back in menu.json. Open a category and see the menu
+items you have defined for the server.
+
+Pass Menu Item Data
+-------------------
+
+Similar to the last section, tapping one of the menu item views will open the
+detail screen, but no data is being passed to that fragment. To pass the item to
+a Detail fragment, create a factory method for the detail fragment.
+
+This should look very similar to the one you created previously.
