@@ -1,4 +1,4 @@
-package com.philipcutting.restaurantapp.respositories
+package com.philipcutting.restaurantapp.serverApi
 
 import retrofit2.Call
 import retrofit2.http.Body

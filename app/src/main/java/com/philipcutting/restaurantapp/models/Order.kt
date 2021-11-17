@@ -2,9 +2,24 @@ package com.philipcutting.restaurantapp.models
 
 import java.time.Instant
 
-data class Order(
-    val menuItems: MutableList<MenuItem>,
-    val time_in_minutes: Double = 0.0,
-    val timeInitiated: Instant? = null,
-    val orderPickedUp: Boolean = false
-)
+
+object Order {
+
+    private var _menuItems: MutableList<MenuItem>  = mutableListOf()
+    var menuItems = _menuItems
+
+    var time_in_minutes: Double = 0.0
+    var timeInitiated: Instant? = null
+    var orderPickedUp: Boolean = false
+
+    fun clear() {
+        menuItems.clear()
+        menuItems = mutableListOf()
+    }
+
+    fun addItemToOrder(menuItem: MenuItem){
+        _menuItems.add(menuItem)
+        menuItems = _menuItems
+    }
+
+}

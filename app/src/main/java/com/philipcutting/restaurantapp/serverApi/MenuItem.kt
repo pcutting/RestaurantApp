@@ -1,4 +1,4 @@
-package com.philipcutting.restaurantapp.respositories
+package com.philipcutting.restaurantapp.serverApi
 
 
 import com.squareup.moshi.Json

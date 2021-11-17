@@ -7,10 +7,10 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.observe
 import com.philipcutting.restaurantapp.databinding.FragmentMenuItemBinding
 import com.philipcutting.restaurantapp.models.MenuItem
-import com.philipcutting.restaurantapp.respositories.MenuRepository
+import androidx.lifecycle.observe
+import com.philipcutting.restaurantapp.serverApi.MenuRepository
 import com.philipcutting.restaurantapp.utilities.toCurrencyFormatFromDouble
 import com.philipcutting.restaurantapp.viewmodels.MainActivityViewModel
 
@@ -57,12 +57,10 @@ class MenuItemDetailFragment: Fragment(R.layout.fragment_menu_item) {
                     detailedDescription.text = item.detailText
                     detailedDescription.movementMethod = ScrollingMovementMethod()
                     price.text = item.price.toCurrencyFormatFromDouble()
-                }
-            } else {
-                binding.apply {
-                    nameLabel.text = itemName
-                    detailedDescription.text = itemDescription
-                    price.text = itemPrice
+
+                    addToCartButton.setOnClickListener {
+                        viewModel.addItemToOrder(item)
+                    }
                 }
             }
         }

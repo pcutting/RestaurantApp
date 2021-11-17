@@ -1,4 +1,4 @@
-package com.philipcutting.restaurantapp.respositories
+package com.philipcutting.restaurantapp.serverApi
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -53,7 +53,6 @@ object MenuRepository {
 
             override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
                 if (response.isSuccessful) {
-
                     val bitmap = BitmapFactory.decodeStream(response.body?.byteStream())
                     Log.i(TAG, "loadImage: Image.byteCount for $url -> ${bitmap?.byteCount}")
                     android.os.Handler(Looper.getMainLooper()).post(object : Runnable {
@@ -65,27 +64,24 @@ object MenuRepository {
                             }
                         }
                     })
-
                 } else {
                     Log.e(TAG, "loadImage Had an error in loading.  ${response.message}")
                 }
-
             }
-
         })
     }
 
     fun fetchCategories(onSuccess: (List<String>) -> Unit) {
         menuApi.fetchCategories()
             .enqueue(object : Callback<Categories> {
-                override fun onFailure(call: Call<Categories>, t: Throwable) {
-                    Log.v("Networking", "Error! $t")
-                }
-
                 override fun onResponse(call: Call<Categories>, response: Response<Categories>) {
                     val categories = response.body()?.categories ?: emptyList()
                     onSuccess(categories)
                 }
+                override fun onFailure(call: Call<Categories>, t: Throwable) {
+                    Log.v("Networking", "Error! $t")
+                }
+
             })
     }
 
