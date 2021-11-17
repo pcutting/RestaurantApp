@@ -50,22 +50,19 @@ class MenuItemDetailFragment: Fragment(R.layout.fragment_menu_item) {
         val itemImageUrl:String = this.arguments?.get(MENU_IMAGE_URL).toString()
         val itemPrice:String = this.arguments?.get(MENU_PRICE).toString()
 
-        Log.i(TAG, "Passed item info: $itemId, Name: $itemName, Description: $itemDescription, " +
-                "ImageUrl: $itemImageUrl, Price $$itemPrice")
-
         viewModel.menuItemNavEvent.observe(viewLifecycleOwner){ item ->
             if(item != null) {
                 binding.apply{
                     nameLabel.text = item.name
                     detailedDescription.text = item.detailText
                     detailedDescription.movementMethod = ScrollingMovementMethod()
-                    priceTv.text = item.price.toCurrencyFormatFromDouble()
+                    price.text = item.price.toCurrencyFormatFromDouble()
                 }
             } else {
                 binding.apply {
                     nameLabel.text = itemName
                     detailedDescription.text = itemDescription
-                    priceTv.text = itemPrice
+                    price.text = itemPrice
                 }
             }
         }
