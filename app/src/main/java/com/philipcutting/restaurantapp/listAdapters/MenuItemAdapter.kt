@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.philipcutting.restaurantapp.databinding.MenuItemBinding
 import com.philipcutting.restaurantapp.models.MenuItem
-import com.philipcutting.restaurantapp.respositories.MenuRepository
+import com.philipcutting.restaurantapp.serverApi.MenuRepository
 import com.philipcutting.restaurantapp.utilities.toCurrencyFormatFromDouble
 
 

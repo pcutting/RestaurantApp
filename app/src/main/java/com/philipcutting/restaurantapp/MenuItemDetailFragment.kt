@@ -10,7 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.observe
 import com.philipcutting.restaurantapp.databinding.FragmentMenuItemBinding
 import com.philipcutting.restaurantapp.models.MenuItem
-import com.philipcutting.restaurantapp.respositories.MenuRepository
+import com.philipcutting.restaurantapp.serverApi.MenuRepository
 import com.philipcutting.restaurantapp.utilities.toCurrencyFormatFromDouble
 import com.philipcutting.restaurantapp.viewmodels.MainActivityViewModel
 

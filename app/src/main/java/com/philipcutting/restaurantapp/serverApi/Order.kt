@@ -1,5 +1,6 @@
-package com.philipcutting.restaurantapp.respositories
+package com.philipcutting.restaurantapp.serverApi
 
+import com.philipcutting.restaurantapp.serverApi.MenuItem
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

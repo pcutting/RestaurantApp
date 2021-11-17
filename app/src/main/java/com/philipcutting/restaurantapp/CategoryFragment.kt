@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.philipcutting.restaurantapp.databinding.FragmentCategoryBinding
 import com.philipcutting.restaurantapp.listAdapters.CategoriesAdapter
-import com.philipcutting.restaurantapp.respositories.MenuRepository
+import com.philipcutting.restaurantapp.serverApi.MenuRepository
 import com.philipcutting.restaurantapp.viewmodels.MainActivityViewModel
 
 private const val TAG = "CategoryFragment"
