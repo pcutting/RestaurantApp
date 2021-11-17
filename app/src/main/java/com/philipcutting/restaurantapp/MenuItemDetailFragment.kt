@@ -1,6 +1,7 @@
 package com.philipcutting.restaurantapp
 
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -49,21 +50,19 @@ class MenuItemDetailFragment: Fragment(R.layout.fragment_menu_item) {
         val itemImageUrl:String = this.arguments?.get(MENU_IMAGE_URL).toString()
         val itemPrice:String = this.arguments?.get(MENU_PRICE).toString()
 
-        Log.i(TAG, "Passed item info: $itemId, Name: $itemName, Description: $itemDescription, " +
-                "ImageUrl: $itemImageUrl, Price $$itemPrice")
-
         viewModel.menuItemNavEvent.observe(viewLifecycleOwner){ item ->
             if(item != null) {
                 binding.apply{
-                    nameTv.text = item.name
-                    detailTextTv.text = item.detailText
-                    priceTv.text = item.price.toCurrencyFormatFromDouble()
+                    nameLabel.text = item.name
+                    detailedDescription.text = item.detailText
+                    detailedDescription.movementMethod = ScrollingMovementMethod()
+                    price.text = item.price.toCurrencyFormatFromDouble()
                 }
             } else {
                 binding.apply {
-                    nameTv.text = itemName
-                    detailTextTv.text = itemDescription
-                    priceTv.text = itemPrice
+                    nameLabel.text = itemName
+                    detailedDescription.text = itemDescription
+                    price.text = itemPrice
                 }
             }
         }

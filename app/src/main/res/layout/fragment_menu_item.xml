@@ -5,58 +5,56 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/half_margin"
-    android:padding="@dimen/half_padding"
-    >
+    android:padding="@dimen/half_padding">
 
     <TextView
-        android:id="@+id/header_tv"
-        android:layout_width="match_parent"
+        android:id="@+id/name_label"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_margin"
+        android:layout_marginBottom="@dimen/standard_margin"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="@string/menu_item"/>
+        tools:text="name"/>
 
     <TextView
-        android:id="@+id/name_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header_tv"
-        tools:text="name" />
-
-    <TextView
-        android:id="@+id/detail_text_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/standard_margin"
-        app:layout_constraintTop_toBottomOf="@+id/name_tv"
-        app:layout_constraintStart_toStartOf="@id/name_tv"
-        tools:text="Details"/>
-
-    <TextView
-        android:id="@+id/price_tv"
+        android:id="@+id/price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/standard_margin"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/name_tv"
+        app:layout_constraintTop_toTopOf="@+id/name_label"
         tools:text="Price"/>
+
+    <TextView
+        android:id="@+id/detailed_description"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/standard_margin"
+        android:layout_marginEnd="@dimen/standard_margin"
+        android:layout_marginBottom="@dimen/standard_margin"
+        android:background="@color/cardview_light_background"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@id/image_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name_label"
+        tools:text="Details" />
 
     <ImageView
         android:id="@+id/image_view"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_margin"
         android:layout_marginEnd="@dimen/standard_margin"
         android:layout_marginBottom="@dimen/standard_margin"
+        android:adjustViewBounds="true"
         android:contentDescription="@string/image_of_food"
-        app:layout_constraintTop_toBottomOf="@id/detail_text_tv"
-        app:layout_constraintStart_toStartOf="parent"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@id/add_to_cart_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_food_placeholder"/>
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_food_placeholder" />
 
     <Button
         android:id="@+id/add_to_cart_button"
@@ -68,6 +66,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
