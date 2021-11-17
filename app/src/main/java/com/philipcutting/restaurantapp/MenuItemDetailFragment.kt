@@ -1,6 +1,7 @@
 package com.philipcutting.restaurantapp
 
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -55,14 +56,15 @@ class MenuItemDetailFragment: Fragment(R.layout.fragment_menu_item) {
         viewModel.menuItemNavEvent.observe(viewLifecycleOwner){ item ->
             if(item != null) {
                 binding.apply{
-                    nameTv.text = item.name
-                    detailTextTv.text = item.detailText
+                    nameLabel.text = item.name
+                    detailedDescription.text = item.detailText
+                    detailedDescription.movementMethod = ScrollingMovementMethod()
                     priceTv.text = item.price.toCurrencyFormatFromDouble()
                 }
             } else {
                 binding.apply {
-                    nameTv.text = itemName
-                    detailTextTv.text = itemDescription
+                    nameLabel.text = itemName
+                    detailedDescription.text = itemDescription
                     priceTv.text = itemPrice
                 }
             }
