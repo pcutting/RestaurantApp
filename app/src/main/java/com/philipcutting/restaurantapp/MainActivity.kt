@@ -3,7 +3,6 @@ package com.philipcutting.restaurantapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import com.philipcutting.restaurantapp.databinding.ActivityMainBinding
@@ -69,7 +68,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.menu_cart -> {
-                swapFragment(CartFragment())
+                swapFragment(OrderFragment())
                 true
             }
 

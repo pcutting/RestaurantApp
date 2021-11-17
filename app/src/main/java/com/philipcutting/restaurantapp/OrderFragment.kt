@@ -6,19 +6,20 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.philipcutting.restaurantapp.databinding.FragmentMenuItemsBinding
 import com.philipcutting.restaurantapp.listAdapters.MenuItemsAdapter
 import com.philipcutting.restaurantapp.models.MenuItem
+import com.philipcutting.restaurantapp.models.Order
 import com.philipcutting.restaurantapp.serverApi.MenuRepository
 import com.philipcutting.restaurantapp.viewmodels.MainActivityViewModel
 
-
-class MenuItemsFragment: Fragment(R.layout.fragment_menu_items) {
+class OrderFragment: Fragment(R.layout.fragment_order) {
 
     companion object {
-        private const val TAG = "MenuItemsFragment"
+        private const val TAG = "OrderFragment"
 
         private const val CATEGORY = "CATEGORY"
 
@@ -37,24 +38,23 @@ class MenuItemsFragment: Fragment(R.layout.fragment_menu_items) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val category:String = this.arguments?.get(CATEGORY).toString()
+
 
         val adapter = MenuItemsAdapter(onItemClick)
         binding = FragmentMenuItemsBinding.bind(view)
         binding.menuItemList.adapter = adapter
         binding.menuItemList.layoutManager = LinearLayoutManager(
-                view.context,
-                RecyclerView.VERTICAL,
-                false
+            view.context,
+            RecyclerView.VERTICAL,
+            false
         )
 
-        MenuRepository.fetchMenuItems(category){
+        viewModel.order.observe(viewLifecycleOwner) {
             adapter.submitList(it)
-            Log.i(TAG, "fetched #:${it.count()}")
         }
 
         val bar = (activity as AppCompatActivity).supportActionBar
-        bar?.title = "Menu Items: $category"
+        bar?.title = "Order"
     }
 
     private  val onItemClick: (item: MenuItem) -> Unit = { item ->
