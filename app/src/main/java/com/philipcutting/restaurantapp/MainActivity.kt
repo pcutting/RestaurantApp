@@ -2,7 +2,9 @@ package com.philipcutting.restaurantapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import com.philipcutting.restaurantapp.databinding.ActivityMainBinding
@@ -21,6 +23,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        var navBadge = binding.bottomNavigation.getOrCreateBadge(R.id.menu_cart)
+//        navBadge.number = 5
+
+
         viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
         viewModel.categoryNavEvent.observe(this){ category ->
             if (!category.isNullOrBlank()) {
@@ -37,6 +43,11 @@ class MainActivity : AppCompatActivity() {
             if (item != null) {
                 onItemClick(item)
             }
+        }
+
+        viewModel.itemsOrdered.observe(this){
+            Log.i("MainActivity", "onCreate: itemsOrdered: $it")
+            navBadge.number = it
         }
 
         binding.bottomNavigation.setOnNavigationItemSelectedListener {
@@ -77,6 +88,8 @@ class MainActivity : AppCompatActivity() {
             else -> false
         }
     }
+
+
 
     private fun swapFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
