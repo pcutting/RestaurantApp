@@ -1,5 +1,6 @@
 package com.philipcutting.restaurantapp.listAdapters
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -14,7 +15,7 @@ import com.philipcutting.restaurantapp.utilities.toCurrencyFormatFromDouble
 
 private const val TAG = "MenuItemsAdapter"
 
-class MenuItemsAdapter(val onClick: (MenuItem) -> Unit): ListAdapter<MenuItem, MenuItemsAdapter.MenuItemsViewHolder>(MenuItemsAdapter.diff) {
+class MenuItemsAdapter(val onClick: (MenuItem) -> Unit): ListAdapter<MenuItem, MenuItemsAdapter.MenuItemsViewHolder>(diff) {
 
     companion object {
         private val diff = object : DiffUtil.ItemCallback<MenuItem>() {
@@ -36,6 +37,10 @@ class MenuItemsAdapter(val onClick: (MenuItem) -> Unit): ListAdapter<MenuItem, M
 
     override fun onBindViewHolder(holder: MenuItemsViewHolder, position: Int) {
         holder.onBind(getItem(position),onClick)
+    }
+
+    fun removeItemAt(position: Int) {
+        notifyItemRemoved(position)
     }
 
     class MenuItemsViewHolder(
