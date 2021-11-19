@@ -7,9 +7,11 @@ import com.philipcutting.restaurantapp.models.MenuItem
 import java.time.Instant
 
 class MainActivityViewModel : ViewModel(){
-    val categoryNavEvent: LiveData<String> = MutableLiveData("")
-    val menuItemNavEvent: LiveData<MenuItem?> = MutableLiveData(null)
-    val order: LiveData<MutableList<MenuItem>> = MutableLiveData(mutableListOf())
+    val categoryNavEvent: MutableLiveData<String> = MutableLiveData("")
+    val menuItemNavEvent: MutableLiveData<MenuItem?> = MutableLiveData(null)
+    val order: MutableLiveData<MutableList<MenuItem>> = MutableLiveData(mutableListOf())
+    var itemsOrdered = MutableLiveData<Int>(0)
+
     var time_in_minutes:  LiveData<Double> =  MutableLiveData(0.0)
     var timeInitiated:  LiveData<Instant?> =  MutableLiveData(null)
     var orderPickedUp:  LiveData<Boolean> =  MutableLiveData(false)
@@ -24,6 +26,7 @@ class MainActivityViewModel : ViewModel(){
 
     fun addItemToOrder(item: MenuItem){
         order.value?.add(item)
+        itemsOrdered.value = order.value?.size ?: 0
     }
 
     fun deleteItemInOrder(index: Int){
