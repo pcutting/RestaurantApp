@@ -26,9 +26,11 @@ class MainActivityViewModel : ViewModel(){
         order.value?.add(item)
     }
 
+    fun deleteItemInOrder(index: Int){
+        order.value?.removeAt(index)
+    }
+
     fun clearOrders(){
         order.value?.clear()
     }
-
-
 }
