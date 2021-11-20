@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/nevie/AndroidStudioProjects/RestaurantApp/app/src/main/res/layout/activity_confirmation.xml" value="0.19947916666666668" />
         <entry key="..\:/Users/nevie/AndroidStudioProjects/RestaurantApp/app/src/main/res/layout/category_item.xml" value="0.21846153846153846" />
         <entry key="..\:/Users/nevie/AndroidStudioProjects/RestaurantApp/app/src/main/res/layout/fragment_menu_item.xml" value="0.25" />
         <entry key="..\:/Users/nevie/AndroidStudioProjects/RestaurantApp/app/src/main/res/layout/fragment_order.xml" value="0.221875" />
