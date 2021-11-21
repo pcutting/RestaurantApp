@@ -4,11 +4,10 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Looper
 import android.util.Log
+import com.philipcutting.restaurantapp.models.MenuIds
 import com.philipcutting.restaurantapp.models.MenuItem
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.internal.http2.Http2Reader
-import okhttp3.internal.http2.Http2Reader.Handler
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
@@ -24,7 +23,7 @@ object MenuRepository {
     private const val baseUrl = "http://$localHostIP:8090"
 
     private val logger = HttpLoggingInterceptor()
-        .setLevel(HttpLoggingInterceptor.Level.BODY )
+        .setLevel(HttpLoggingInterceptor.Level.BODY)
 
     private val client = OkHttpClient.Builder().addInterceptor(logger)
 
@@ -86,11 +85,13 @@ object MenuRepository {
     }
 
     fun submitOrder(menuIds: List<Int>, onSuccess: (Int) -> Unit) {
-        menuApi.submitOrder(menuIds)
+        val modifiedMenuIds = MenuIds(menuIds)
+        menuApi.submitOrder(modifiedMenuIds)
             .enqueue(object : Callback<Int> {
 
                 override fun onResponse(call: Call<Int>, response: Response<Int>) {
                     val prepTime = response.body() ?: -1
+                    Log.i(TAG, "preptime: $prepTime")
                     onSuccess(prepTime)
                 }
 
@@ -99,6 +100,9 @@ object MenuRepository {
                 }
             })
     }
+
+
+
 
     fun fetchMenuItems(category: String, onSuccess: (List<MenuItem>) -> Unit) {
         menuApi.fetchMenuItems(category)

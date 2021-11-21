@@ -16,7 +16,7 @@ class ConfirmationActivity: AppCompatActivity() {
 
         fun createIntent(
             context: Context,
-            instantOrderWillBeReady: Instant
+            instantOrderWillBeReady: Long
         ) : Intent {
             return Intent(context, ConfirmationActivity::class.java).apply {
                 putExtra(PICKUP_INSTANT, instantOrderWillBeReady.toString())
