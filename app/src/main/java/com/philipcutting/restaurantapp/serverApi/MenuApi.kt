@@ -15,6 +15,6 @@ interface MenuApi {
 
 //    @Headers("Content-Type: application/json")
     @POST("/order")
-    fun submitOrder(@Body menuIds: MenuIds): Call<Int>
+    fun submitOrder(@Body menuIds: MenuIds): Call<PrepTime>
 
 }

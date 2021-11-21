@@ -87,15 +87,15 @@ object MenuRepository {
     fun submitOrder(menuIds: List<Int>, onSuccess: (Int) -> Unit) {
         val modifiedMenuIds = MenuIds(menuIds)
         menuApi.submitOrder(modifiedMenuIds)
-            .enqueue(object : Callback<Int> {
+            .enqueue(object : Callback<PrepTime> {
 
-                override fun onResponse(call: Call<Int>, response: Response<Int>) {
-                    val prepTime = response.body() ?: -1
+                override fun onResponse(call: Call<PrepTime>, response: Response<PrepTime>) {
+                    val prepTime = response.body()?.prepTime ?: -1
                     Log.i(TAG, "preptime: $prepTime")
                     onSuccess(prepTime)
                 }
 
-                override fun onFailure(call: Call<Int>, t: Throwable) {
+                override fun onFailure(call: Call<PrepTime>, t: Throwable) {
                     Log.v("Networking", "Error! $t")
                 }
             })
