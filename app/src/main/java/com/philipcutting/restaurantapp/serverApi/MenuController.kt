@@ -85,7 +85,7 @@ object MenuRepository {
     }
 
     fun submitOrder(menuIds: List<Int>, onSuccess: (Int) -> Unit) {
-        val modifiedMenuIds = MenuIds(menuIds)
+        val modifiedMenuIds = com.philipcutting.restaurantapp.serverApi.MenuIds(menuIds)
         menuApi.submitOrder(modifiedMenuIds)
             .enqueue(object : Callback<PrepTime> {
 
