@@ -1,6 +1,5 @@
 package com.philipcutting.restaurantapp.models
 
-
 data class MenuItem(
     val id: Int,
     val name: String,
