@@ -1,10 +1,8 @@
 package com.philipcutting.restaurantapp.serverApi
 
+
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface MenuApi {
 
@@ -14,7 +12,8 @@ interface MenuApi {
     @GET("/menu")
     fun fetchMenuItems(@Query("category") categoryName: String): Call<MenuItems>
 
+//    @Headers("Content-Type: application/json")
     @POST("/order")
-    fun submitOrder(@Body menuIds: List<Int>): Call<Int>
+    fun submitOrder(@Body menuIds: com.philipcutting.restaurantapp.serverApi.MenuIds): Call<PrepTime>
 
 }

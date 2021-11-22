@@ -35,7 +35,7 @@ class CategoryFragment: Fragment(R.layout.fragment_category) {
 
         MenuRepository.fetchCategories { categories ->
             adapter.submitList(categories)
-            Log.i(TAG, "fetched #:${categories.count()}")
+            //Log.i(TAG, "fetched #:${categories.count()}")
         }
 
         val bar = (activity as AppCompatActivity).supportActionBar
