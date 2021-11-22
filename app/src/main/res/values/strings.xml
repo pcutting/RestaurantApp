@@ -5,4 +5,8 @@
     <string name="add_to_cart">Add to Cart</string>
     <string name="image_of_food">Image of food</string>
     <string name="menu_item_image">menu Item image</string>
+    <string name="ordered_at">Ordered at:</string>
+    <string name="preparation_time">Preparation Time:</string>
+    <string name="new_order">New Order</string>
+    <string name="pickup_time">Pickup time:</string>
 </resources>

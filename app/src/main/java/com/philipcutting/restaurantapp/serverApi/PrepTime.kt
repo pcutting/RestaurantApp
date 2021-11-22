@@ -5,5 +5,5 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class PrepTime(
-    @Json(name = "preparation_time") val prepTime:Int
+    @Json(name = "preparation_time") val prepTimeInMinutes:Int
 )

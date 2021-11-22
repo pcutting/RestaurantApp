@@ -46,5 +46,7 @@ class MainActivityViewModel : ViewModel(){
 
     fun clearOrders(){
         order.value?.clear()
+        order.value = mutableListOf()
+        itemsOrdered.value = 0
     }
 }

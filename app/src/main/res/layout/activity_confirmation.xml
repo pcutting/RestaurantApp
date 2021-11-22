@@ -4,29 +4,79 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <TextView
-        android:id="@+id/time_left_label"
+        android:id="@+id/ordered_at_time_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/standard_margin"
-        android:text="Remaining Time:"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="@string/ordered_at"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
-        android:id="@+id/time_until_pickup"
+        android:id="@+id/ordered_at_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/standard_margin"
-        android:text="TextView"
-        app:layout_constraintStart_toEndOf="@+id/time_left_label"
-        app:layout_constraintTop_toTopOf="@+id/time_left_label" />
+        app:layout_constraintTop_toTopOf="@id/ordered_at_time_label"
+        app:layout_constraintStart_toEndOf="@id/ordered_at_time_label"
+        tools:text="12:23:03 am"/>
 
-    <Button
+
+    <TextView
+        android:id="@+id/preparation_time_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/standard_margin"
-        android:text="New Order"
+        android:text="@string/preparation_time"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ordered_at_time" />
+
+    <TextView
+        android:id="@+id/preparation_time_in_min"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_margin"
+        app:layout_constraintStart_toEndOf="@+id/preparation_time_label"
+        app:layout_constraintTop_toTopOf="@+id/preparation_time_label" />
+
+
+    <TextView
+        android:id="@+id/ready_at_time_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/standard_margin"
+        android:text="@string/pickup_time"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/preparation_time_label" />
+
+    <TextView
+        android:id="@+id/ready_at_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_margin"
+        app:layout_constraintStart_toEndOf="@+id/ready_at_time_label"
+        app:layout_constraintTop_toTopOf="@+id/ready_at_time_label" />
+
+
+    <TextView
+        android:id="@+id/timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="100sp"
+        app:layout_constraintTop_toBottomOf="@id/ready_at_time_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/new_order_button"/>
+
+
+    <Button
+        android:id="@+id/new_order_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/standard_margin"
+        android:text="@string/new_order"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

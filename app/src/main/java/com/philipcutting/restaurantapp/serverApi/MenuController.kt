@@ -90,9 +90,9 @@ object MenuRepository {
             .enqueue(object : Callback<PrepTime> {
 
                 override fun onResponse(call: Call<PrepTime>, response: Response<PrepTime>) {
-                    val prepTime = response.body()?.prepTime ?: -1
-                    Log.i(TAG, "preptime: $prepTime")
-                    onSuccess(prepTime)
+                    val prepMinutes = response.body()?.prepTimeInMinutes ?: -1
+                    Log.i(TAG, "preptime: $prepMinutes")
+                    onSuccess(prepMinutes)
                 }
 
                 override fun onFailure(call: Call<PrepTime>, t: Throwable) {

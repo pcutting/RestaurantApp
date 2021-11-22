@@ -21,25 +21,25 @@ import com.philipcutting.restaurantapp.models.MenuItem
 import com.philipcutting.restaurantapp.models.Order
 import com.philipcutting.restaurantapp.serverApi.MenuRepository
 import com.philipcutting.restaurantapp.viewmodels.MainActivityViewModel
+import java.time.Instant
 
 class OrderFragment: Fragment(R.layout.fragment_order) {
 
     companion object {
         private const val TAG = "OrderFragment"
-        private const val CATEGORY = "CATEGORY"
+//        private const val CATEGORY = "CATEGORY"
 
-        fun newInstance(category: String): MenuItemsFragment {
-            val bundle = Bundle().apply {
-                putString(CATEGORY, category)
-            }
-            return MenuItemsFragment().apply {
-                arguments = bundle
-            }
-        }
+//        fun newInstance(category: String): MenuItemsFragment {
+//            val bundle = Bundle().apply {
+//                putString(CATEGORY, category)
+//            }
+//            return MenuItemsFragment().apply {
+//                arguments = bundle
+//            }
+//        }
     }
 
     private lateinit var binding: FragmentOrderBinding
-//    private lateinit var binding: FragmentMenuItemsBinding
     private val viewModel: MainActivityViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,7 +47,6 @@ class OrderFragment: Fragment(R.layout.fragment_order) {
 
         val adapter = MenuItemsAdapter(onItemClick)
         binding = FragmentOrderBinding.bind(view)
-//        binding = FragmentMenuItemsBinding.bind(view)
         binding.menuItemList.adapter = adapter
         binding.menuItemList.layoutManager = LinearLayoutManager(
             view.context,
@@ -74,14 +73,13 @@ class OrderFragment: Fragment(R.layout.fragment_order) {
                 }
                 .setPositiveButton("submit") { _, _ ->
                     Log.i(TAG, "Clicked submit in purchase Dialog.")
-                    viewModel.getTimeForPickup{cookTime ->
-                        Log.i(TAG, "onSuccessOrder callback:  time found $cookTime")
-                        val intent = ConfirmationActivity.createIntent(requireContext(), cookTime.toLong())
+                    viewModel.getTimeForPickup{cookTimeInMinutes ->
+                        Log.i(TAG, "onSuccessOrder callback:  time in minutes found $cookTimeInMinutes")
+                        val intent = ConfirmationActivity.createIntent(requireContext(), cookTimeInMinutes, Instant.now())
                         viewModel.clearOrders()
                         startActivity(intent)
                     }
-                }
-                .show()
+                }.show()
         }
 
         viewModel.order.observe(viewLifecycleOwner) {
@@ -90,18 +88,8 @@ class OrderFragment: Fragment(R.layout.fragment_order) {
 
         val bar = (activity as AppCompatActivity).supportActionBar
         bar?.title = "Order"
-
-
     }
 
-
-
-//    private val onSuccessOrder: (Int) -> Unit = { cookTime ->
-//        Log.i(TAG, "onSuccessOrder callback:  time found $cookTime")
-//        val intent = ConfirmationActivity.createIntent(requireContext(), cookTime.toLong())
-//        viewModel.clearOrders()
-//        startActivity(intent)
-//    }
 
     private  val onItemClick: (item: MenuItem) -> Unit = { item ->
         viewModel.goToMenuItemDetailFragment(item)
