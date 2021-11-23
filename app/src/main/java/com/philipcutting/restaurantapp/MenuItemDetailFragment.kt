@@ -44,23 +44,22 @@ class MenuItemDetailFragment: Fragment(R.layout.fragment_menu_item) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentMenuItemBinding.bind(view)
 
-        val itemId: String = this.arguments?.get(MENU_ITEM_ID).toString()
         val itemName: String = this.arguments?.get(MENU_NAME).toString()
-        val itemDescription:String = this.arguments?.get(MENU_DESCRIPTION).toString()
         val itemImageUrl:String = this.arguments?.get(MENU_IMAGE_URL).toString()
-        val itemPrice:String = this.arguments?.get(MENU_PRICE).toString()
 
         viewModel.menuItemNavEvent.observe(viewLifecycleOwner){ item ->
-            if(item != null) {
-                binding.apply{
-                    nameLabel.text = item.name
-                    detailedDescription.text = item.detailText
-                    detailedDescription.movementMethod = ScrollingMovementMethod()
-                    price.text = item.price.toCurrencyFormatFromDouble()
+            if(item == null) {
+                return@observe
+            }
 
-                    addToCartButton.setOnClickListener {
-                        viewModel.addItemToOrder(item)
-                    }
+            binding.apply{
+                nameLabel.text = item.name
+                detailedDescription.text = item.detailText
+                detailedDescription.movementMethod = ScrollingMovementMethod()
+                price.text = item.price.toCurrencyFormatFromDouble()
+
+                addToCartButton.setOnClickListener {
+                    viewModel.addItemToOrder(item, requireContext())
                 }
             }
         }

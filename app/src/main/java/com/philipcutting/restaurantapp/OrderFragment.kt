@@ -27,16 +27,6 @@ class OrderFragment: Fragment(R.layout.fragment_order) {
 
     companion object {
         private const val TAG = "OrderFragment"
-//        private const val CATEGORY = "CATEGORY"
-
-//        fun newInstance(category: String): MenuItemsFragment {
-//            val bundle = Bundle().apply {
-//                putString(CATEGORY, category)
-//            }
-//            return MenuItemsFragment().apply {
-//                arguments = bundle
-//            }
-//        }
     }
 
     private lateinit var binding: FragmentOrderBinding
@@ -58,7 +48,7 @@ class OrderFragment: Fragment(R.layout.fragment_order) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val swipeAdapter = adapter
                 val position = viewHolder.adapterPosition
-                viewModel.deleteItemInOrder(position)
+                viewModel.deleteItemInOrder(position, requireContext())
                 swipeAdapter.removeItemAt(position)
             }
         }
@@ -76,7 +66,7 @@ class OrderFragment: Fragment(R.layout.fragment_order) {
                     viewModel.getTimeForPickup{cookTimeInMinutes ->
                         Log.i(TAG, "onSuccessOrder callback:  time in minutes found $cookTimeInMinutes")
                         val intent = ConfirmationActivity.createIntent(requireContext(), cookTimeInMinutes, Instant.now())
-                        viewModel.clearOrders()
+                        viewModel.clearOrders(requireContext())
                         startActivity(intent)
                     }
                 }.show()
@@ -89,7 +79,6 @@ class OrderFragment: Fragment(R.layout.fragment_order) {
         val bar = (activity as AppCompatActivity).supportActionBar
         bar?.title = "Order"
     }
-
 
     private  val onItemClick: (item: MenuItem) -> Unit = { item ->
         viewModel.goToMenuItemDetailFragment(item)

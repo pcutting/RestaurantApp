@@ -13,19 +13,26 @@ import com.philipcutting.restaurantapp.viewmodels.MainActivityViewModel
 
 class MainActivity : AppCompatActivity() {
 
+    companion object {
+        private const val TAG = "MainActivity"
+    }
+
     private lateinit var viewModel : MainActivityViewModel
 
     private lateinit var binding: ActivityMainBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onStart() {
+        super.onStart()
+        viewModel.checkForSavedOrder(this)
+        Log.i(TAG, "onStart called")
+    }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         var navBadge = binding.bottomNavigation.getOrCreateBadge(R.id.menu_cart)
-//        navBadge.number = 5
-
 
         viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
         viewModel.categoryNavEvent.observe(this){ category ->
