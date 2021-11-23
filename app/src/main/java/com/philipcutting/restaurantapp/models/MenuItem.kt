@@ -1,5 +1,8 @@
 package com.philipcutting.restaurantapp.models
 
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
 data class MenuItem(
     val id: Int,
     val name: String,

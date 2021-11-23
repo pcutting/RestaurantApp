@@ -14,6 +14,6 @@ interface MenuApi {
 
 //    @Headers("Content-Type: application/json")
     @POST("/order")
-    fun submitOrder(@Body menuIds: com.philipcutting.restaurantapp.serverApi.MenuIds): Call<PrepTime>
+    fun submitOrder(@Body menuIds: MenuIds): Call<PrepTime>
 
 }
