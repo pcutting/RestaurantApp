@@ -12,7 +12,6 @@ interface MenuApi {
     @GET("/menu")
     fun fetchMenuItems(@Query("category") categoryName: String): Call<MenuItems>
 
-//    @Headers("Content-Type: application/json")
     @POST("/order")
     fun submitOrder(@Body menuIds: MenuIds): Call<PrepTime>
 

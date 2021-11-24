@@ -11,8 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.philipcutting.restaurantapp.databinding.FragmentMenuItemsBinding
 import com.philipcutting.restaurantapp.listAdapters.MenuItemsAdapter
 import com.philipcutting.restaurantapp.models.MenuItem
+import com.philipcutting.restaurantapp.serverApi.Categories
+import com.philipcutting.restaurantapp.serverApi.MenuItems
 import com.philipcutting.restaurantapp.serverApi.MenuRepository
 import com.philipcutting.restaurantapp.viewmodels.MainActivityViewModel
+import retrofit2.Call
 
 
 class MenuItemsFragment: Fragment(R.layout.fragment_menu_items) {
@@ -48,10 +51,22 @@ class MenuItemsFragment: Fragment(R.layout.fragment_menu_items) {
                 false
         )
 
-        MenuRepository.fetchMenuItems(category){
+        val onSuccess: (List<MenuItem>) -> Unit = {
+            binding.errorsFragment.errorsView.visibility = View.GONE
             adapter.submitList(it)
             Log.i(TAG, "fetched #:${it.count()}")
         }
+
+
+        val onError: (Call<MenuItems>, Throwable) -> Unit = { call, t ->
+            Log.i(TAG, "Error message: ${t.message}")
+            binding.errorsFragment.errorsView.visibility = View.VISIBLE
+            binding.errorsFragment.header.text = "There was an error accessing these menu items."
+            binding.errorsFragment.message.text = "Server Response: ${call.toString()}"
+            binding.errorsFragment.callData.text = "'${t.message}'"
+        }
+
+        MenuRepository.fetchMenuItems(category,onSuccess, onError)
 
         val bar = (activity as AppCompatActivity).supportActionBar
         bar?.title = "Menu Items: $category"

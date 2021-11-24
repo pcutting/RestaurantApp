@@ -70,7 +70,7 @@ object MenuRepository {
         })
     }
 
-    fun fetchCategories(onSuccess: (List<String>) -> Unit) {
+    fun fetchCategories(onSuccess: (List<String>) -> Unit, onError: (Call<Categories>, t: Throwable) -> Unit ) {
         menuApi.fetchCategories()
             .enqueue(object : Callback<Categories> {
                 override fun onResponse(call: Call<Categories>, response: Response<Categories>) {
@@ -79,12 +79,12 @@ object MenuRepository {
                 }
                 override fun onFailure(call: Call<Categories>, t: Throwable) {
                     Log.v("Networking", "Error! $t")
+                    onError(call, t)
                 }
-
             })
     }
 
-    fun submitOrder(menuIds: List<Int>, onSuccess: (Int) -> Unit) {
+    fun submitOrder(menuIds: List<Int>, onSuccess: (Int) -> Unit, onError: (Call<PrepTime>, t: Throwable) -> Unit ) {
         val modifiedMenuIds = com.philipcutting.restaurantapp.serverApi.MenuIds(menuIds)
         menuApi.submitOrder(modifiedMenuIds)
             .enqueue(object : Callback<PrepTime> {
@@ -97,18 +97,17 @@ object MenuRepository {
 
                 override fun onFailure(call: Call<PrepTime>, t: Throwable) {
                     Log.v("Networking", "Error! $t")
+                    onError(call, t)
                 }
             })
     }
 
-
-
-
-    fun fetchMenuItems(category: String, onSuccess: (List<MenuItem>) -> Unit) {
+    fun fetchMenuItems(category: String, onSuccess: (List<MenuItem>) -> Unit, onError: (Call<MenuItems>, Throwable) -> Unit ) {
         menuApi.fetchMenuItems(category)
             .enqueue(object : Callback<MenuItems> {
                 override fun onFailure(call: Call<MenuItems>, t: Throwable) {
                     Log.v("Networking", "Error! $t")
+                    onError(call, t)
                 }
 
                 override fun onResponse(call: Call<MenuItems>, response: Response<MenuItems>) {
@@ -120,17 +119,15 @@ object MenuRepository {
             })
     }
 
-    private fun convertRepositoryMenuToModelMenu(jMenuItems: MenuItems?): List<com.philipcutting.restaurantapp.models.MenuItem>{
-
-
-        val list = mutableListOf<com.philipcutting.restaurantapp.models.MenuItem>()
+    private fun convertRepositoryMenuToModelMenu(jMenuItems: MenuItems?): List<MenuItem>{
+        val list = mutableListOf<MenuItem>()
 
         if(jMenuItems==null) {
             return list
         }
 
         jMenuItems.items.forEach {
-            val item = com.philipcutting.restaurantapp.models.MenuItem(
+            val item = MenuItem(
                     id=it.id,
                     name = it.name,
                     detailText = it.detailText,

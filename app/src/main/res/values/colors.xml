@@ -21,5 +21,6 @@
     <color name="background_color">@color/light_blue</color>
 
     <color name="default_text_color">@color/contrast_light_blue</color>
+    <color name="error_warning_background">#eed202</color>
 
 </resources>
