@@ -1,10 +1,8 @@
 package com.philipcutting.restaurantapp
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.SimpleAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -13,13 +11,10 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.philipcutting.restaurantapp.databinding.FragmentMenuItemsBinding
 import com.philipcutting.restaurantapp.databinding.FragmentOrderBinding
 import com.philipcutting.restaurantapp.listAdapters.MenuItemsAdapter
 import com.philipcutting.restaurantapp.listAdapters.SwipeToDeleteCallback
 import com.philipcutting.restaurantapp.models.MenuItem
-import com.philipcutting.restaurantapp.models.Order
-import com.philipcutting.restaurantapp.serverApi.MenuRepository
 import com.philipcutting.restaurantapp.viewmodels.MainActivityViewModel
 import java.time.Instant
 
@@ -73,6 +68,11 @@ class OrderFragment: Fragment(R.layout.fragment_order) {
         }
 
         viewModel.order.observe(viewLifecycleOwner) {
+            if (it.size == 0) {
+                binding.purchaseButton.visibility = View.INVISIBLE
+            } else {
+                binding.purchaseButton.visibility = View.VISIBLE
+            }
             adapter.submitList(it)
         }
 
