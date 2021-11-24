@@ -10,8 +10,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.philipcutting.restaurantapp.databinding.FragmentCategoryBinding
 import com.philipcutting.restaurantapp.listAdapters.CategoriesAdapter
+import com.philipcutting.restaurantapp.models.MenuItem
+import com.philipcutting.restaurantapp.serverApi.Categories
 import com.philipcutting.restaurantapp.serverApi.MenuRepository
 import com.philipcutting.restaurantapp.viewmodels.MainActivityViewModel
+import retrofit2.Call
 
 private const val TAG = "CategoryFragment"
 
@@ -33,10 +36,20 @@ class CategoryFragment: Fragment(R.layout.fragment_category) {
             false
         )
 
-        MenuRepository.fetchCategories { categories ->
+        val onSuccess: (List<String>?) -> Unit = { categories ->
             adapter.submitList(categories)
-            //Log.i(TAG, "fetched #:${categories.count()}")
+            binding.errorsFragment.errorsView.visibility = View.GONE
         }
+
+        val onError: (Call<Categories>, Throwable) -> Unit = { call, t ->
+            Log.i(TAG, "Error message: ${t.message}")
+            binding.errorsFragment.errorsView.visibility = View.VISIBLE
+            binding.errorsFragment.header.text = "There was an error accessing Categories"
+            binding.errorsFragment.message.text = "Server Response: ${call.toString()}"
+            binding.errorsFragment.callData.text = "'${t.message}'"
+        }
+
+        MenuRepository.fetchCategories (onSuccess, onError)
 
         val bar = (activity as AppCompatActivity).supportActionBar
         bar?.title = "Categories"

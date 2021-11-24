@@ -15,7 +15,11 @@ import com.philipcutting.restaurantapp.databinding.FragmentOrderBinding
 import com.philipcutting.restaurantapp.listAdapters.MenuItemsAdapter
 import com.philipcutting.restaurantapp.listAdapters.SwipeToDeleteCallback
 import com.philipcutting.restaurantapp.models.MenuItem
+import com.philipcutting.restaurantapp.serverApi.Categories
+import com.philipcutting.restaurantapp.serverApi.MenuItems
+import com.philipcutting.restaurantapp.serverApi.PrepTime
 import com.philipcutting.restaurantapp.viewmodels.MainActivityViewModel
+import retrofit2.Call
 import java.time.Instant
 
 class OrderFragment: Fragment(R.layout.fragment_order) {
@@ -50,6 +54,21 @@ class OrderFragment: Fragment(R.layout.fragment_order) {
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(binding.menuItemList)
 
+        val onSuccess: (Int) -> Unit = {cookTimeInMinutes ->
+            Log.i(TAG, "onSuccessOrder callback:  time in minutes found $cookTimeInMinutes")
+            val intent = ConfirmationActivity.createIntent(requireContext(), cookTimeInMinutes, Instant.now())
+            viewModel.clearOrders(requireContext())
+            startActivity(intent)
+        }
+
+        val onError: (Call<PrepTime>, Throwable) -> Unit = { call, t ->
+            Log.i(TAG, "Error message: ${t.message}")
+            binding.errorsFragment.errorsView.visibility = View.VISIBLE
+            binding.errorsFragment.header.text = "There was an error ordering the items."
+            binding.errorsFragment.message.text = "Server Response: ${call.toString()}"
+            binding.errorsFragment.callData.text = "'${t.message}'"
+        }
+
         binding.purchaseButton.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
                 .setMessage("Your order is almost ready.")
@@ -58,12 +77,7 @@ class OrderFragment: Fragment(R.layout.fragment_order) {
                 }
                 .setPositiveButton("submit") { _, _ ->
                     Log.i(TAG, "Clicked submit in purchase Dialog.")
-                    viewModel.getTimeForPickup{cookTimeInMinutes ->
-                        Log.i(TAG, "onSuccessOrder callback:  time in minutes found $cookTimeInMinutes")
-                        val intent = ConfirmationActivity.createIntent(requireContext(), cookTimeInMinutes, Instant.now())
-                        viewModel.clearOrders(requireContext())
-                        startActivity(intent)
-                    }
+                    viewModel.getTimeForPickup(onSuccess, onError)
                 }.show()
         }
 

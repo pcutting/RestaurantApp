@@ -5,8 +5,11 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.philipcutting.restaurantapp.models.MenuItem
+import com.philipcutting.restaurantapp.serverApi.Categories
 import com.philipcutting.restaurantapp.serverApi.MenuRepository
+import com.philipcutting.restaurantapp.serverApi.PrepTime
 import com.philipcutting.restaurantapp.utilities.RestaurantsSharedPreferences
+import retrofit2.Call
 
 private const val TAG = "MainActivityViewModel"
 class MainActivityViewModel : ViewModel(){
@@ -48,10 +51,10 @@ class MainActivityViewModel : ViewModel(){
         RestaurantsSharedPreferences.saveOrder(context,order.value ?: emptyList())
     }
 
-    fun getTimeForPickup(onSuccessOrder: (Int) -> Unit){
+    fun getTimeForPickup(onSuccessOrder: (Int) -> Unit, onError: (Call<PrepTime>, t: Throwable) -> Unit){
         Log.i(TAG, "getTimeForPickup called")
         val orderIds: List<Int> = order.value?.map {it.id } ?: emptyList()
-        MenuRepository.submitOrder(orderIds, onSuccessOrder)
+        MenuRepository.submitOrder(orderIds, onSuccessOrder, onError)
     }
 
     fun clearOrders(context: Context){

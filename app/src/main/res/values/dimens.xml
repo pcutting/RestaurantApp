@@ -7,7 +7,7 @@
     <dimen name="standard_font_size">24sp</dimen>
     <dimen name="header_font_size">36sp</dimen>
     <dimen name="small_font_size">16sp</dimen>
-
+    <dimen name="header_text_size">30sp</dimen>
 
 
 </resources>

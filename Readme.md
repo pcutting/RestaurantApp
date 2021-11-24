@@ -1,5 +1,8 @@
 There are a some changes that could be made.  
 
+* Add loading icon for when the system is waiting on api response.
+  - Before 
+
 * When order almost ready notification is clicked, it could go to the confirmation activity 
   or new order area based on it's prior state.
   
